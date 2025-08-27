@@ -1,0 +1,39 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Generate synthetic time series data
+np.random.seed(42)
+n = 200
+t = np.linspace(0, 10, n)
+trend = 0.5 * t
+seasonal = np.sin(2 * np.pi * t)
+cyclical = 0.1 * np.sin(2 * np.pi * t / 5)
+noise = 0.2 * np.random.normal(size=n)
+data = trend + seasonal + cyclical + noise
+
+# Create DataFrame
+df = pd.DataFrame(data, columns=['Sales'])
+df.index = pd.date_range(start='2010-01-01', periods=n, freq='MS')
+
+# Plot time series components
+fig, ax = plt.subplots(4, 1, figsize=(10, 8), sharex=True)
+
+ax[0].plot(df.index, df['Sales'], label='Original Data')
+ax[0].set_title('Original Data')
+ax[0].legend()
+
+ax[1].plot(df.index, trend, label='Trend', color='orange')
+ax[1].set_title('Trend')
+ax[1].legend()
+
+ax[2].plot(df.index, seasonal, label='Seasonal', color='green')
+ax[2].set_title('Seasonal')
+ax[2].legend()
+
+ax[3].plot(df.index, cyclical, label='Cyclical', color='red')
+ax[3].set_title('Cyclical')
+ax[3].legend()
+
+plt.tight_layout()
+plt.show()
